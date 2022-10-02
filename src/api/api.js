@@ -1,35 +1,25 @@
-import { keyboard } from "@testing-library/user-event/dist/keyboard";
 import axios from "axios";
+
+const API_KEY = process.env.REACT_APP_API_KEY;
 
 const BASE_URL = axios.create({
   baseURL: "https://api.themoviedb.org/3/",
 });
 
-export const IMG_URL = "https://image.tmdb.org/t/p/w500/"
+export const IMG_URL = "https://image.tmdb.org/t/p/w500/";
 
-export const getPopular = async () => {
-  const response = await BASE_URL.get(
-    `movie/popular?api_key=${process.env.REACT_APP_API_KEY}&language=en-US&page=1`
+
+export const getPopular = () => getMovies(`movie/popular?api_key=${API_KEY}`);
+export const getTrending = () => getMovies(`trending/all/week?api_key=${API_KEY}`);
+export const queryMovies = ({ queryKey }) => {
+  const movieQuery = queryKey[1];
+  return getMovies(
+    `search/movie?api_key=${API_KEY}&language=en-US&query=${movieQuery}&page=1&include_adult=false`
   );
-  return response.data;
 };
 
-export const getTrending = async () => {
-  const response = await BASE_URL.get(
-    `trending/all/week?api_key=${process.env.REACT_APP_API_KEY}`
-  );
+const getMovies = async (url) => {
+
+  const response = await BASE_URL.get(url);
   return response.data;
 };
-
-
-export const getMovies = async ({queryKey}) => {
-  console.log(queryKey)
-  // const [key, url] = queryKey;
-  const url = queryKey[1];
-
-  const response = await BASE_URL.get(
-    url
-  );
-  return response.data;
-};
-
