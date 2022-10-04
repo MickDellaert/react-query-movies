@@ -1,11 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
 import useDebounce from "../hooks/useDebounce";
 import * as api from "../api/api";
-
 import { ListItem } from "./ListItem";
-import { TvListItem } from "./TvListItem";
 
-export const SearchResults = ({ movieQuery, type, setType }) => {
+export const SearchResults = ({ movieQuery }) => {
+  
   const searchTerm = useDebounce(movieQuery, 500);
 
   const {
@@ -40,13 +39,13 @@ export const SearchResults = ({ movieQuery, type, setType }) => {
       {queryData && <h2>Movies</h2>}
 
       {queryData?.results.map((item) => (
-        <ListItem item={item} type={type} setType={setType}/>
+        <ListItem item={item} mediaType="movie" />
       ))}
 
-      {queryTvData && <h2>Tv</h2>}
+      {queryTvData && <h2>TV Shows</h2>}
 
       {queryTvData?.results.map((item) => (
-        <TvListItem item={item} type={type} setType={setType}/>
+        <ListItem item={item} mediaType="tv" />
       ))}
     </>
   );

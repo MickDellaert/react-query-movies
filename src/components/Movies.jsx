@@ -1,7 +1,3 @@
-import { Link } from "react-router-dom";
-
-import { useEffect } from "react";
-
 import { useQuery } from "@tanstack/react-query";
 
 import { SearchContainer } from "./SearchContainer";
@@ -9,13 +5,7 @@ import { ListItem } from "./ListItem";
 
 import * as api from "../api/api";
 
-
-
-export const Movies = ({type, setType}) => {
-
-
-
-
+export const Movies = () => {
   const { isLoading: popularLoading, data: popularData } = useQuery(
     ["popular-movies"],
     api.getPopular
@@ -29,21 +19,18 @@ export const Movies = ({type, setType}) => {
     return <h2>"Loading"</h2>;
   }
 
-
-
   return (
     <>
-      <SearchContainer type={type} setType={setType}/>
+      <SearchContainer />
 
       <h2>Popular Movies</h2>
       {popularData?.results.map((item) => (
-       <ListItem item={item} type={type} setType={setType}/>
+        <ListItem item={item} mediaType="movie" />
       ))}
 
-      <h2>Trending Movies</h2>
+      <h2>Trending TV shows or movies</h2>
       {trendingData?.results.map((item) => (
-       <ListItem item={item} type={type} setType={setType}/>
-
+        <ListItem item={item} mediaType={item.media_type} />
       ))}
     </>
   );

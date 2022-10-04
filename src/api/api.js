@@ -22,20 +22,12 @@ export const queryMovies = ({ queryKey }) => {
 
 export const queryTv = ({ queryKey }) => {
   const movieQuery = queryKey[1];
-
   return getMovies(
     `search/tv?api_key=${API_KEY}&language=en-US&query=${movieQuery}&page=1&include_adult=false`
   );
 };
 
-// export const getMovieDetails = (id, type) =>
-//   getMovies(`${type}/${id}?api_key=${API_KEY}&language=en-US`);
-
-// export const getTvDetails = (id, type) =>
-//   getMovies(`${type}/${id}?api_key=${API_KEY}&language=en-US`);
-
 export const getDetails = (id, type) => {
-  window.localStorage.setItem("typestorage", type);
   return getMovies(`${type}/${id}?api_key=${API_KEY}&language=en-US`);
 };
 

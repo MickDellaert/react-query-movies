@@ -1,15 +1,17 @@
 import { Link } from "react-router-dom";
-import { useEffect } from "react";
 
 import * as api from "../api/api";
 
-export const ListItem = ({ item, tvItem, type, setType }) => {
-
-
+export const ListItem = ({ item, mediaType }) => {
+  console.log(mediaType);
 
   return (
-    <Link key={item.id} to={`movie/${item.id}`}>
-      <div type={type} onClick={() => setType("movie")}>
+    <Link
+      key={item.id}
+      to={`${mediaType}/${item.id}`}
+      state={{ type: mediaType }}
+    >
+      <div>
         <h3>{item.title}</h3>
         <img src={`${api.IMG_URL}${item.poster_path}`} alt="" />
       </div>

@@ -1,40 +1,19 @@
 import { useQuery } from "@tanstack/react-query";
-
-import { useEffect } from "react";
-
-
-import { useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 
 import * as api from "../api/api";
 
-export const MovieDetails = ({type, setType}) => {
+export const MovieDetails = () => {
   const { id } = useParams();
-  const movieId = "movie/" + id;
+  const location = useLocation();
+  const type = location.state.type;
 
   console.log(id);
-  console.log(movieId);
-
-
-
-  // const { data: movieDetails, isLoading: movieDetailsLoading } = useQuery(
-  //   ["getMovieDetails", id, type],
-  //   () => api.getMovieDetails(id, type),
-  //   {
-  //     enabled: type === "movie",
-  //   }
-  // );
-
-  // const { data: tvDetails, isLoading: tvDetailsLoading } = useQuery(
-  //   ["getTvDetails", id, type],
-  //   () => api.getTvDetails(id, type),
-  //   {
-  //     enabled: type === "tv",
-  //   }
-  // );
+  console.log(location);
 
   const { data: details, isLoading: detailsLoading } = useQuery(
     ["getDetails", id, type],
-    () => api.getDetails(id, type),
+    () => api.getDetails(id, type)
     // {
     //   enabled: type !== "",
     // }
@@ -52,5 +31,3 @@ export const MovieDetails = ({type, setType}) => {
     </>
   );
 };
-
-// 760161

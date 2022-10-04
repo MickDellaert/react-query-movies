@@ -3,7 +3,7 @@ import { useState } from "react";
 import { Search } from "./Search";
 import { SearchResults } from "./SearchResults";
 
-export const SearchContainer = ({type, setType}) => {
+export const SearchContainer = () => {
   const [movieQuery, setMovieQuery] = useState("");
 
   const getInput = (e) => {
@@ -14,7 +14,7 @@ export const SearchContainer = ({type, setType}) => {
     <>
       <div>SearchContainer</div>
       <Search getInput={getInput} movieQuery={movieQuery} />
-      <SearchResults movieQuery={movieQuery} type={type} setType={setType}/>
+      <SearchResults movieQuery={movieQuery} />
     </>
   );
 };
