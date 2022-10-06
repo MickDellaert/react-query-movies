@@ -1,0 +1,28 @@
+.trending-header__title {
+  color: aqua;
+}
+
+.small-list-container {
+  width: 300px;
+  height: 800px;
+  background-color: antiquewhite;
+  position: absolute;
+  right: 100px;
+  top: 100px;
+  overflow: hidden;
+}
+
+.small-list-slider {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.small-list-item {
+  width: 300px;
+  height: 200px;
+}
+
+.small-list-image {
+  width: 280px;
+}

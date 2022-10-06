@@ -4,13 +4,10 @@ import * as api from "../api/api";
 import { ListItem } from "./ListItem";
 
 export const SearchResults = ({ movieQuery }) => {
-  
   const searchTerm = useDebounce(movieQuery, 500);
 
   const {
     data: queryData,
-    isInitialLoading,
-    isLoading,
     isFetching,
   } = useQuery(["query-movies", searchTerm], api.queryMovies, {
     enabled: !!searchTerm,
@@ -28,8 +25,6 @@ export const SearchResults = ({ movieQuery }) => {
     return <h2>Loading</h2>;
   }
 
-  console.log(queryTvData);
-
   if (queryData && queryData.results.length === 0) {
     return <h2>Sorry, no results were found</h2>;
   }
@@ -39,13 +34,13 @@ export const SearchResults = ({ movieQuery }) => {
       {queryData && <h2>Movies</h2>}
 
       {queryData?.results.map((item) => (
-        <ListItem item={item} mediaType="movie" />
+        <ListItem key={item.id} item={item} mediaType="movie" searched={movieQuery} />
       ))}
 
       {queryTvData && <h2>TV Shows</h2>}
 
       {queryTvData?.results.map((item) => (
-        <ListItem item={item} mediaType="tv" />
+        <ListItem key={item.id} item={item} mediaType="tv" />
       ))}
     </>
   );

@@ -8,8 +8,11 @@ export const MovieDetails = () => {
   const location = useLocation();
   const type = location.state.type;
 
+  // const searched = location.state.searched;
+
   console.log(id);
   console.log(location);
+  // console.log("location searched" + searched);
 
   const { data: details, isLoading: detailsLoading } = useQuery(
     ["getDetails", id, type],

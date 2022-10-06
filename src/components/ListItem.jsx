@@ -2,14 +2,15 @@ import { Link } from "react-router-dom";
 
 import * as api from "../api/api";
 
-export const ListItem = ({ item, mediaType }) => {
-  console.log(mediaType);
+export const ListItem = ({ item, mediaType, searched }) => {
+  // console.log(mediaType);
+  // console.log("searched" + searched);
+
 
   return (
     <Link
-      key={item.id}
       to={`${mediaType}/${item.id}`}
-      state={{ type: mediaType }}
+      state={{ type: mediaType, searched:searched }}
     >
       <div>
         <h3>{item.title}</h3>

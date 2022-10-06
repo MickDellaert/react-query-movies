@@ -11,7 +11,7 @@ export const IMG_URL = "https://image.tmdb.org/t/p/w500/";
 export const getPopular = () => getMovies(`movie/popular?api_key=${API_KEY}`);
 
 export const getTrending = () =>
-  getMovies(`trending/all/week?api_key=${API_KEY}`);
+  getMovies(`trending/all/week?api_key=${API_KEY}&append_to_response=videos`);
 
 export const queryMovies = ({ queryKey }) => {
   const movieQuery = queryKey[1];
@@ -28,8 +28,11 @@ export const queryTv = ({ queryKey }) => {
 };
 
 export const getDetails = (id, type) => {
-  return getMovies(`${type}/${id}?api_key=${API_KEY}&language=en-US`);
+  return getMovies(`${type}/${id}?api_key=${API_KEY}&append_to_response=videos,images`);
 };
+
+export const getConfig = () => getMovies(`configuration?api_key=${API_KEY}`);
+
 
 const getMovies = async (url) => {
   const response = await BASE_URL.get(url);
