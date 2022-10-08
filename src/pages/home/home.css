@@ -1,10 +1,17 @@
+* {
+  box-sizing: border-box;
+}
+h5 {
+  margin: 0;
+}
+
 .trending-header__title {
   color: aqua;
 }
 
 .small-list-container {
   width: 300px;
-  height: 800px;
+  height: 3000px;
   background-color: antiquewhite;
   position: absolute;
   right: 100px;
