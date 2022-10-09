@@ -28,11 +28,26 @@ export const queryTv = ({ queryKey }) => {
 };
 
 export const getDetails = (id, type) => {
-  return getMovies(`${type}/${id}?api_key=${API_KEY}&append_to_response=videos,images`);
+  return getMovies(
+    `${type}/${id}?api_key=${API_KEY}&append_to_response=videos,images`
+  );
 };
 
-export const getConfig = () => getMovies(`configuration?api_key=${API_KEY}`);
+// export const getMovieDetails = (id) => {
+//   return getMovies(
+//     `movie/${id}?api_key=${API_KEY}&append_to_response=videos,images`
+//   );
+// };
 
+// export const getManyDetails = async (id, type) => {
+//   const response = await BASE_URL.get(
+//     `${type}/${id}?api_key=${API_KEY}&append_to_response=videos,images`
+//   );
+  
+//   return response.data;
+// };
+
+export const getConfig = () => getMovies(`configuration?api_key=${API_KEY}`);
 
 const getMovies = async (url) => {
   const response = await BASE_URL.get(url);

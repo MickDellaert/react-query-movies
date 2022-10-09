@@ -14,6 +14,8 @@ export const Trending = () => {
     return <h2>"Loading"</h2>;
   }
 
+  // console.log(trendingData)
+
   return (
     <>
 

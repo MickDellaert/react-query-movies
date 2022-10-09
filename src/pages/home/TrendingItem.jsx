@@ -1,10 +1,13 @@
 import "./home.css";
 
+import axios from "axios";
+
 import * as api from "../../api/api";
 
 import { useEffect, useState, useRef, useLayoutEffect } from "react";
 
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueries } from "@tanstack/react-query";
+import { get } from "mongoose";
 
 export const TrendingItem = ({ trendingData }) => {
   const sizeRef = useRef();
@@ -18,14 +21,16 @@ export const TrendingItem = ({ trendingData }) => {
   const [height, setHeight] = useState(0);
   const [width, setWidth] = useState(0);
 
-  const trendingHeader = trendingData.results[nextIndex];
-  const trendingNext = trendingData.results[nextIndex + 1];
-
   const sliced = trendingData.results.slice(0, 10);
   const double = [...sliced];
 
+  // console.log(sliced);
+
+  const trendingHeader = sliced[nextIndex];
+  const trendingNext = sliced[nextIndex + 1];
+
   const doubleIndexed = double.map((item, key) => ({ key, ...item }));
-  console.log(doubleIndexed);
+  // console.log(doubleIndexed);
 
   // sliced.push(sliced[0]);
   // sliced.unshift(sliced[sliced.length - 2])
@@ -40,7 +45,7 @@ export const TrendingItem = ({ trendingData }) => {
   // console.log(tempArr)
   // console.log(sliced)
 
-  console.log("index"+ nextIndex);
+  console.log("index" + nextIndex);
   // console.log(double.length);
 
   const id = trendingData.results[nextIndex].id;
@@ -79,7 +84,7 @@ export const TrendingItem = ({ trendingData }) => {
   const handleClick = (item) => {
     // {setClickedIndex(event.target.id)}
     setNextIndex(item);
-    setStart(-height * (item+1));
+    setStart(-height * (item + 1));
     console.log("key" + item);
   };
 
@@ -98,17 +103,45 @@ export const TrendingItem = ({ trendingData }) => {
     }
   };
 
-  const { data: details, isLoading: detailsLoading } = useQuery(
-    ["getDetails", id, type],
-    () => api.getDetails(id, type)
-  );
 
-  if (detailsLoading) {
+  // const getManyDetails = (id, type) => {
+  //   return axios.get(
+  //     `https://api.themoviedb.org/3/${type}/${id}?api_key=d4208ada7ca0b82909b61d7d3afd76fa&append_to_response=videos,images`
+  //   );
+  // };
+
+
+  const userQueries = useQueries({
+    queries: sliced.map((movie) => {
+      return {
+        queryKey: ["getManyDetails", movie.id, movie.media_type],
+        queryFn: () => api.getDetails(movie.id, movie.media_type), 
+        
+      };
+    }),
+  });
+
+  console.log(userQueries);
+
+
+  if (userQueries.some(query => query.isLoading)) {
     return <h2>"Loading"</h2>;
   }
 
   return (
     <>
+      <div>Many Details</div>
+
+      <div>
+        {userQueries.map((many) => (
+          <div>
+            <h3>{many.data.title}</h3>
+            <h3>{many.data.original_name}</h3>
+
+          </div>
+        ))}
+      </div>
+
       <div>TrendingItem</div>
 
       <div>
