@@ -8,18 +8,18 @@ import { useEffect, useState } from "react";
 
 export const TrendingItem = ({ trendingData }) => {
   let divHeight = 800;
-  let startItem = 3;
-  let itemNumber = 4;
+  let startItem = 1;
+  let itemNumber = 6;
   let containerPadding = 0;
   let singlePadding = 5;
 
-  const [currentIndex, setCurrentIndex] = useState(0);
+  const [currentIndex, setCurrentIndex] = useState(startItem);
   const [singleHeight, setSingleHeight] = useState(
     (divHeight - containerPadding * 2) / itemNumber
   );
-  const [startOffset, setStartOffset] = useState(0);
+  const [startOffset, setStartOffset] = useState(-startItem * singleHeight);
   const [isForward, setisForward] = useState(false);
-  const [clickedIndex, setClickedIndex] = useState();
+  const [clickedIndex, setClickedIndex] = useState(startItem);
   const [transition, setTransition] = useState(true);
 
   const sliced = trendingData.results.slice(0, 6);
@@ -52,6 +52,7 @@ export const TrendingItem = ({ trendingData }) => {
 
   const nextFunction = () => {
     setisForward(true);
+    setTransition(true);
 
     if (currentIndex < doubleIndexed.length) {
       setCurrentIndex((nextIndex) => nextIndex + 1);
@@ -67,9 +68,10 @@ export const TrendingItem = ({ trendingData }) => {
 
   const previousFunction = () => {
     setisForward(false);
+    setTransition(true);
 
     if (currentIndex > 0) {
-      setCurrentIndex((nextIndex) => nextIndex - 1);
+      setCurrentIndex((currentIndex) => currentIndex - 1);
       setStartOffset(startOffset + singleHeight);
     }
 
@@ -82,28 +84,47 @@ export const TrendingItem = ({ trendingData }) => {
 
   useEffect(() => {
     if (!isForward && currentIndex === doubleIndexed.length / 2) {
-      setCurrentIndex((nextIndex) => nextIndex - 1);
+      setCurrentIndex((currentIndex) => currentIndex - 1);
       setTransition(true);
       setStartOffset(startOffset + singleHeight);
     }
     if (isForward && currentIndex === 0) {
-      setCurrentIndex((nextIndex) => nextIndex + 1);
+      setCurrentIndex((currentIndex) => currentIndex + 1);
       setTransition(true);
-      setStartOffset(-singleHeight);
+      setStartOffset(startOffset - singleHeight);
     }
   }, [currentIndex]);
 
   const handleClick = (item) => {
+    setTransition(false);
+
+    setClickedIndex(item);
     setCurrentIndex(item);
-    setStartOffset(-singleHeight * (item + 1));
-    console.log("key" + item);
+
+    if (item > doubleIndexed.length / 2) {
+      setClickedIndex(item - doubleIndexed.length / 2);
+    }
   };
+
+  useEffect(() => {
+    setTransition(true);
+
+    setClickedIndex(clickedIndex);
+    setCurrentIndex(clickedIndex);
+
+    if (clickedIndex > doubleIndexed.length / 2) {
+      setStartOffset(-singleHeight * clickedIndex);
+    }
+
+    setStartOffset(-singleHeight * clickedIndex);
+  }, [clickedIndex]);
 
   console.log("index" + currentIndex);
   console.log("length" + doubleIndexed.length);
   console.log("start" + startOffset);
   console.log("singleHeight" + singleHeight);
 
+  console.log(transition);
   console.log(isForward);
 
   return (
