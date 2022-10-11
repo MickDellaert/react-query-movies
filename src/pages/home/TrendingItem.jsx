@@ -8,9 +8,9 @@ import { useEffect, useState } from "react";
 
 export const TrendingItem = ({ trendingData }) => {
   let divHeight = 800;
-  let startItem = 1;
-  let itemNumber = 6;
-  let containerPadding = 0;
+  let startItem = 0;
+  let itemNumber = 4;
+  let containerPadding = 5;
   let singlePadding = 5;
 
   const [currentIndex, setCurrentIndex] = useState(startItem);
@@ -163,7 +163,7 @@ export const TrendingItem = ({ trendingData }) => {
                   onClick={() => handleClick(item.key)}
                   style={{
                     height: `calc((100%  / ${itemNumber})`,
-                    padding: `${singlePadding}px`,
+                    paddingBlock: `${singlePadding}px`,
                   }}
                 >
                   <p>{item.key} </p>
