@@ -12,6 +12,7 @@ export const TrendingItem = ({ trendingData }) => {
   let itemNumber = 4;
   let containerPadding = 5;
   let singlePadding = 5;
+  let test = "test";
 
   const [currentIndex, setCurrentIndex] = useState(startItem);
   const [singleHeight, setSingleHeight] = useState(
