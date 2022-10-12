@@ -8,9 +8,9 @@ import { useEffect, useState } from "react";
 
 export const TrendingItem = ({ trendingData }) => {
   let divHeight = 800;
-  let startItem = 0;
-  let itemNumber = 4;
-  let containerPadding = 5;
+  let startItem = 6;
+  let itemNumber = 6;
+  let containerPadding = 0;
   let singlePadding = 5;
   let test = "test";
 
@@ -19,19 +19,19 @@ export const TrendingItem = ({ trendingData }) => {
     (divHeight - containerPadding * 2) / itemNumber
   );
   const [startOffset, setStartOffset] = useState(-startItem * singleHeight);
-  const [isForward, setisForward] = useState(false);
+  const [isForward, setisForward] = useState(true);
   const [clickedIndex, setClickedIndex] = useState(startItem);
   const [transition, setTransition] = useState(true);
 
   const sliced = trendingData.results.slice(0, 6);
-  const double = [...sliced, ...sliced];
+  const double = [...sliced, ...sliced, ...sliced];
   const doubleIndexed = double.map((item, key) => ({ key, ...item }));
 
   // const trendingHeader = sliced[nextIndex];
   // const trendingNext = sliced[nextIndex + 1];
 
   // const doubleIndexed = double.map((item, key) => ({ key, ...item }));
-  // console.log(doubleIndexed);
+  console.log(doubleIndexed);
 
   // sliced.push(sliced[0]);
   // sliced.unshift(sliced[sliced.length - 2])
@@ -44,8 +44,8 @@ export const TrendingItem = ({ trendingData }) => {
   // console.log(tempArr)
   // console.log(sliced)
 
-  const id = trendingData.results[currentIndex].id;
-  const type = trendingData.results[currentIndex].media_type;
+  // const id = trendingData.results[currentIndex].id;
+  // const type = trendingData.results[currentIndex].media_type;
 
   // useEffect(() => {
   //   setStartOffset(startOffset);
@@ -55,12 +55,12 @@ export const TrendingItem = ({ trendingData }) => {
     setisForward(true);
     setTransition(true);
 
-    if (currentIndex < doubleIndexed.length) {
+    if (currentIndex < doubleIndexed.length / 3) {
       setCurrentIndex((nextIndex) => nextIndex + 1);
       setStartOffset(startOffset - singleHeight);
     }
 
-    if (currentIndex === doubleIndexed.length / 2) {
+    if (currentIndex === doubleIndexed.length / 3) {
       setCurrentIndex(0);
       setTransition(false);
       setStartOffset(0);
@@ -77,14 +77,14 @@ export const TrendingItem = ({ trendingData }) => {
     }
 
     if (currentIndex === 0) {
-      setCurrentIndex(doubleIndexed.length / 2);
+      setCurrentIndex(doubleIndexed.length / 3);
       setTransition(false);
-      setStartOffset((-singleHeight * doubleIndexed.length) / 2);
+      setStartOffset((-singleHeight * doubleIndexed.length) / 3);
     }
   };
 
   useEffect(() => {
-    if (!isForward && currentIndex === doubleIndexed.length / 2) {
+    if (!isForward && currentIndex === doubleIndexed.length / 3) {
       setCurrentIndex((currentIndex) => currentIndex - 1);
       setTransition(true);
       setStartOffset(startOffset + singleHeight);
@@ -97,36 +97,58 @@ export const TrendingItem = ({ trendingData }) => {
   }, [currentIndex]);
 
   const handleClick = (item) => {
-    setTransition(false);
+    console.log("item" + item);
 
-    setClickedIndex(item);
-    setCurrentIndex(item);
+    if (item <= doubleIndexed.length + itemNumber) {
+      setTransition(true);
 
-    if (item > doubleIndexed.length / 2) {
-      setClickedIndex(item - doubleIndexed.length / 2);
+      setClickedIndex(item);
+      setStartOffset(-singleHeight * item);
+      setCurrentIndex(item - itemNumber);
     }
+
+    if (item > (doubleIndexed.length - itemNumber)) {
+      // setStartOffset(-singleHeight * item);
+      setTransition(false);
+      setClickedIndex(item);
+
+      setCurrentIndex(item - 6)
+
+      setStartOffset(-2 * singleHeight);
+
+      // setCurrentIndex(item - 6)
+    }
+
+    // // setClickedIndex(item);
+
+    // if (item > 6) {
+    //   setTransition(false);
+    //   setClickedIndex(item - 6);
+
+    //   setStartOffset(0);
+    //   // setCurrentIndex(item - 6)
+    // }
   };
 
   useEffect(() => {
-    setTransition(true);
-
-    setClickedIndex(clickedIndex);
-    setCurrentIndex(clickedIndex);
-
-    if (clickedIndex > doubleIndexed.length / 2) {
-      setStartOffset(-singleHeight * clickedIndex);
-    }
-
-    setStartOffset(-singleHeight * clickedIndex);
+    // setCurrentIndex(clickedIndex);
+    // setCurrentIndex(clickedIndex);
+    // console.log("effectclicked" + clickedIndex);
+    // // setClickedIndex(clickedIndex - 6);
+    // setTransition(true);
+    // // setStartOffset(-(currentIndex - 6) * singleHeight);
+    // setStartOffset(-singleHeight * clickedIndex);
   }, [clickedIndex]);
 
-  console.log("index" + currentIndex);
-  console.log("length" + doubleIndexed.length);
+  console.log("currentindex" + currentIndex);
+  console.log("clickedindex" + clickedIndex);
+
+  // console.log("length" + doubleIndexed.length);
   console.log("start" + startOffset);
   console.log("singleHeight" + singleHeight);
 
-  console.log(transition);
-  console.log(isForward);
+  console.log("transition " + transition);
+  console.log("isforward" + isForward);
 
   return (
     <>
