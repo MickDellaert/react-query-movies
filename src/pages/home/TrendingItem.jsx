@@ -119,7 +119,7 @@ export const TrendingItem = ({ trendingData }) => {
     setStartOffset(-singleHeight * clickedIndex);
   }, [clickedIndex]);
 
-  console.log("index" + currentIndex);
+  console.log("currentindex" + currentIndex);
   console.log("length" + doubleIndexed.length);
   console.log("start" + startOffset);
   console.log("singleHeight" + singleHeight);
