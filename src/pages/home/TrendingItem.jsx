@@ -8,7 +8,7 @@ import { useEffect, useState } from "react";
 
 export const TrendingItem = ({ trendingData }) => {
   let divHeight = 800;
-  let startItem = 6;
+  let startItem = 1;
   let itemNumber = 5;
   let containerPadding = 10;
   let singlePadding = 5;
@@ -38,7 +38,7 @@ export const TrendingItem = ({ trendingData }) => {
   useEffect(() => {
     if (clicked) {
       setTransition(true);
-      setCurrentIndex(clickedIndex - doubleIndexed.length / 2);
+      setCurrentIndex(clickedIndex - doubleIndexed.length / 2 );
     }
   }, [clicked]);
 
@@ -58,13 +58,13 @@ export const TrendingItem = ({ trendingData }) => {
     setCurrentIndex(item);
     setIsClicked(false);
 
-    if (item > doubleIndexed.length / 2 + 1) {
+    if (item > doubleIndexed.length / 2) {
       setTransition(false);
       setIsClicked(true);
       setClickedIndex(item);
       setCurrentIndex(0);
     }
-  };
+ };
 
   const handleTransition = () => {
     if (!clicked) {
@@ -77,12 +77,15 @@ export const TrendingItem = ({ trendingData }) => {
         setCurrentIndex(doubleIndexed.length / 2);
       }
     }
+
+    setIsClicked(false);
   };
 
   console.log("currentindex" + currentIndex);
   console.log("clickedindex" + clickedIndex);
   console.log("singleHeight" + singleHeight);
   console.log("transition " + transition);
+  console.log("isclicked " + clicked);
 
   // console.log("length" + doubleIndexed.length);
   // console.log("start" + startOffset);
@@ -112,7 +115,7 @@ export const TrendingItem = ({ trendingData }) => {
             className="vertical-slider-content"
             style={{
               transform: `translateY(${-currentIndex * singleHeight}px)`,
-              transition: transition ? `all 250ms linear` : "none",
+              transition: transition ? `all 2500ms linear` : "none",
             }}
             onTransitionEnd={() => handleTransition()}
           >
