@@ -6,7 +6,10 @@ const BASE_URL = axios.create({
   baseURL: "https://api.themoviedb.org/3/",
 });
 
-export const IMG_URL = "https://image.tmdb.org/t/p/w500/";
+export const IMG_URL = "https://image.tmdb.org/t/p/w1280/";
+
+export const IMG_ORIGINAL_URL = "https://image.tmdb.org/t/p/orignal/";
+
 
 export const getPopular = () => getMovies(`movie/popular?api_key=${API_KEY}`);
 

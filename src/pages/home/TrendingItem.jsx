@@ -1,35 +1,41 @@
 import "./home.css";
 
+import { v4 as uuidv4 } from "uuid";
 import * as api from "../../api/api";
-
 import { useEffect, useState } from "react";
 
 // import { useQuery, useQueries } from "@tanstack/react-query";
 
 export const TrendingItem = ({ trendingData }) => {
-  let divHeight = 800;
-  let startItem = 0;
-  let itemNumber = 6;
-  let totalNumber = 12;
-  let containerPadding = 10;
-  let singlePadding = 5;
+  const divHeight = 800;
+  const startItem = 1;
+  const itemNumber = 6;
+  const totalNumber = 6;
+  const containerPadding = 10;
+  const singlePadding = 5;
+  const singleHeight = (divHeight - containerPadding * 2) / itemNumber;
 
   const [currentIndex, setCurrentIndex] = useState(startItem);
-  const [singleHeight, setSingleHeight] = useState(
-    (divHeight - containerPadding * 2) / itemNumber
-  );
+  // const [singleHeight, setSingleHeight] = useState(
+  //   (divHeight - containerPadding * 2) / itemNumber
+  // );
 
   // const [startOffset, setStartOffset] = useState(-currentIndex * singleHeight);
   // const [isForward, setisForward] = useState(true);
 
   const [clickedIndex, setClickedIndex] = useState(startItem);
+  const [sliderIndex, setSliderIndex] = useState(startItem);
+
   const [transition, setTransition] = useState(true);
   const [clicked, setIsClicked] = useState(false);
+  const [isSliding, setIsSliding] = useState(true);
 
   const sliced = trendingData.results.slice(0, totalNumber);
+  const double = [...sliced, ...sliced];
   const triple = [...sliced, ...sliced, ...sliced];
 
   const slicedIndexed = sliced.map((item, key) => ({ key, ...item }));
+  const doubleIndexed = sliced.map((item, key) => ({ key, ...item }));
   const tripleIndexed = triple.map((item, key) => ({ key, ...item }));
 
   // const trendingHeader = sliced[nextIndex];
@@ -38,16 +44,29 @@ export const TrendingItem = ({ trendingData }) => {
 
   console.log(tripleIndexed);
 
-  // useEffect(() => {
-  //   if (clicked) {
-  //     setTransition(true);
-  //     setCurrentIndex(clickedIndex - doubleIndexed.length / 2);
-  //   }
-  // }, [clicked]);
+  useEffect(() => {
+    if (isSliding) {
+      const intervalId = setInterval(() => {
+        setTransition(true);
+        setCurrentIndex((prev) => prev + 1);
+
+        if (currentIndex > tripleIndexed.length / 3) {
+          // setTransition(false);
+          setCurrentIndex(
+            (currentIndex) => currentIndex - tripleIndexed.length / 3
+          );
+        }
+      }, 2000);
+      return () => {
+        clearInterval(intervalId);
+      };
+    }
+  }, [isSliding]);
 
   const nextFunction = () => {
     setTransition(true);
     setCurrentIndex((currentIndex) => currentIndex + 1);
+    setSliderIndex((prevIndex) => prevIndex + 1);
   };
 
   const previousFunction = () => {
@@ -59,73 +78,58 @@ export const TrendingItem = ({ trendingData }) => {
     setTransition(true);
     setClickedIndex(item);
     setCurrentIndex(item);
-    // setIsClicked(false);
+  };
 
-    // if (item > doubleIndexed.length) {
-    //   setTransition(false);
-    //   setIsClicked(true);
-    //   setClickedIndex(item);
-    //   setCurrentIndex(0);
-    // }
+  const pauseSlider = () => {
+    setIsSliding(!isSliding);
   };
 
   const handleTransition = () => {
-    // if (!clicked) {
-    // if (currentIndex === doubleIndexed.length + 1) {
-    //   setTransition(false);
-    //   setCurrentIndex(1);
-    // }
     if (currentIndex === 0) {
       setTransition(false);
       setCurrentIndex(tripleIndexed.length / 3);
     }
-
     if (currentIndex > tripleIndexed.length / 3) {
       setTransition(false);
       setCurrentIndex(currentIndex - tripleIndexed.length / 3);
     }
-    // }
+  };
 
-    // setIsClicked(false);
+  const handleSliderTransition = () => {
+    // if (currentIndex > tripleIndexed.length / 3) {
+    //   setTransition(false);
+    //   setCurrentIndex(currentIndex - tripleIndexed.length / 3);
+    // }
   };
 
   console.log("currentindex" + currentIndex);
   console.log("clickedindex" + clickedIndex);
+  console.log("sliderindex" + sliderIndex);
   console.log("singleHeight" + singleHeight);
   console.log("transition " + transition);
-  console.log("isclicked " + clicked);
+  console.log("issliding" + isSliding);
 
-  // console.log("length" + doubleIndexed.length);
+  // console.log("isclicked " + clicked);
+
+  console.log("length" + tripleIndexed.length);
   // console.log("start" + startOffset);
 
   return (
     <>
       <div>TrendingItem</div>
 
-      {/* <div>
-        <h3 className="trending-header__title">{trendingHeader.title}</h3>
-        <img src={`${api.IMG_URL}${trendingHeader.backdrop_path}`} alt="" />
-      </div>
-
-      <div>TrendingNext</div>
-
-      <div>
-        <h3>{trendingNext.title}</h3>
-        <img src={`${api.IMG_URL}${trendingNext.backdrop_path}`} alt="" />
-      </div> */}
-
       <div className="horizontal-slider-container">
         <div className="horizontal-slider-crop">
           <div
             className="horizontal-slider-content"
             style={{
-              transform: `translateX(-${(currentIndex) * 100}%)`,
+              transform: `translateX(-${currentIndex * 100}%)`,
               transition: transition ? `all 300ms linear` : "none",
-              backgroundColor: "green",
             }}
+            onTransitionEnd={() => handleSliderTransition()}
           >
-            {slicedIndexed.map((item) => (
-              <div className="horizontal-slider-item" key={item.id}>
+            {tripleIndexed.map((item) => (
+              <div className="horizontal-slider-item" key={uuidv4()}>
                 <p>{item.key} </p>
                 <h5>{item.title} </h5>
                 <h5>{item.original_name}</h5>
@@ -149,7 +153,7 @@ export const TrendingItem = ({ trendingData }) => {
           <div
             className="vertical-slider-content"
             style={{
-              transform: `translateY(-${(currentIndex + 1)* singleHeight}px)`,
+              transform: `translateY(-${(currentIndex + 1) * singleHeight}px)`,
               transition: transition ? `all 300ms linear` : "none",
             }}
             onTransitionEnd={() => handleTransition()}
@@ -183,6 +187,7 @@ export const TrendingItem = ({ trendingData }) => {
 
       <button onClick={previousFunction}>Previous</button>
       <button onClick={nextFunction}>Next</button>
+      <button onClick={pauseSlider}>Pause slideshow</button>
     </>
   );
 };
