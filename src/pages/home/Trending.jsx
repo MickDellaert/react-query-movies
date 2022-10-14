@@ -26,9 +26,9 @@ export const Trending = () => {
 
       <TrendingItem trendingData={trendingData}  />
 
-      {trendingData?.results.map((item) => (
+      {/* {trendingData?.results.map((item) => (
         <ListItem key={item.id} item={item} mediaType={item.media_type} />
-      ))}
+      ))} */}
     </>
   );
 };

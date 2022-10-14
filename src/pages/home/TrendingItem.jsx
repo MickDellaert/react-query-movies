@@ -8,7 +8,7 @@ import { useEffect, useState } from "react";
 
 export const TrendingItem = ({ trendingData }) => {
   let divHeight = 800;
-  let startItem = 1;
+  let startItem = 0;
   let itemNumber = 6;
   let totalNumber = 12;
   let containerPadding = 10;
@@ -27,10 +27,10 @@ export const TrendingItem = ({ trendingData }) => {
   const [clicked, setIsClicked] = useState(false);
 
   const sliced = trendingData.results.slice(0, totalNumber);
-  const double = [...sliced, ...sliced, ...sliced];
+  const triple = [...sliced, ...sliced, ...sliced];
 
   const slicedIndexed = sliced.map((item, key) => ({ key, ...item }));
-  const tripleIndexed = double.map((item, key) => ({ key, ...item }));
+  const tripleIndexed = triple.map((item, key) => ({ key, ...item }));
 
   // const trendingHeader = sliced[nextIndex];
   // const trendingNext = sliced[nextIndex + 1];
@@ -58,8 +58,8 @@ export const TrendingItem = ({ trendingData }) => {
   const handleClick = (item) => {
     setTransition(true);
     setClickedIndex(item);
-    setCurrentIndex(item + 1);
-    setIsClicked(false);
+    setCurrentIndex(item);
+    // setIsClicked(false);
 
     // if (item > doubleIndexed.length) {
     //   setTransition(false);
@@ -70,23 +70,23 @@ export const TrendingItem = ({ trendingData }) => {
   };
 
   const handleTransition = () => {
-    if (!clicked) {
-      // if (currentIndex === doubleIndexed.length + 1) {
-      //   setTransition(false);
-      //   setCurrentIndex(1);
-      // }
-      if (currentIndex === 0) {
-        setTransition(false);
-        setCurrentIndex(tripleIndexed.length / 3);
-      }
-
-      if (currentIndex > tripleIndexed.length / 3) {
-        setTransition(false);
-        setCurrentIndex(currentIndex - tripleIndexed.length / 3);
-      }
+    // if (!clicked) {
+    // if (currentIndex === doubleIndexed.length + 1) {
+    //   setTransition(false);
+    //   setCurrentIndex(1);
+    // }
+    if (currentIndex === 0) {
+      setTransition(false);
+      setCurrentIndex(tripleIndexed.length / 3);
     }
 
-    setIsClicked(false);
+    if (currentIndex > tripleIndexed.length / 3) {
+      setTransition(false);
+      setCurrentIndex(currentIndex - tripleIndexed.length / 3);
+    }
+    // }
+
+    // setIsClicked(false);
   };
 
   console.log("currentindex" + currentIndex);
@@ -114,6 +114,33 @@ export const TrendingItem = ({ trendingData }) => {
         <img src={`${api.IMG_URL}${trendingNext.backdrop_path}`} alt="" />
       </div> */}
 
+      <div className="horizontal-slider-container">
+        <div className="horizontal-slider-crop">
+          <div
+            className="horizontal-slider-content"
+            style={{
+              transform: `translateX(-${(currentIndex) * 100}%)`,
+              transition: transition ? `all 300ms linear` : "none",
+              backgroundColor: "green",
+            }}
+          >
+            {slicedIndexed.map((item) => (
+              <div className="horizontal-slider-item" key={item.id}>
+                <p>{item.key} </p>
+                <h5>{item.title} </h5>
+                <h5>{item.original_name}</h5>
+
+                <img
+                  className="vertical-slider-item-image"
+                  src={`${api.IMG_URL}${item.backdrop_path}`}
+                  alt=""
+                />
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
       <div
         className="vertical-slider-container"
         style={{ height: `${divHeight}px`, padding: `${containerPadding}px` }}
@@ -122,35 +149,11 @@ export const TrendingItem = ({ trendingData }) => {
           <div
             className="vertical-slider-content"
             style={{
-              transform: `translateY(${-currentIndex * singleHeight}px)`,
-              transition: transition ? `all 1000ms linear` : "none",
+              transform: `translateY(-${(currentIndex + 1)* singleHeight}px)`,
+              transition: transition ? `all 300ms linear` : "none",
             }}
             onTransitionEnd={() => handleTransition()}
           >
-            {/* {slicedIndexed.map((item) => (
-              <>
-                <div
-                  className="vertical-slider-item sliced"
-                  key={item.id}
-                  onClick={() => handleClick(item.key)}
-                  style={{
-                    height: `calc((100%  / ${itemNumber})`,
-                    paddingBlock: `${singlePadding}px`,
-                  }}
-                >
-                  <p>{item.key} </p>
-                  <h5>{item.title} </h5>
-                  <h5>{item.original_name}</h5>
-
-                  <img
-                    className="vertical-slider-item-image"
-                    src={`${api.IMG_URL}${item.backdrop_path}`}
-                    alt=""
-                  />
-                </div>
-              </>
-            ))} */}
-
             {tripleIndexed.map((item) => (
               <>
                 <div
