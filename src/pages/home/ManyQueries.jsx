@@ -24,26 +24,10 @@ export const ManyQueries = ({trendingData}) => {
     }),
   });
 
-  console.log(userQueries);
+  // console.log(userQueries);
 
   const test = [1, 2, 3, 4, 5];
 
-  const renderExtraPrev = () => {
-    let output = [];
-    for (let index = 0; index < 3; index++) {
-      output.push(test[5 - 1 - index]);
-    }
-    output.reverse();
-    return output;
-  };
-
-  const renderExtraNext = () => {
-    let output = [];
-    for (let index = 0; index < 3; index++) {
-      output.push(test[index]);
-    }
-    return output;
-  };
 
   if (userQueries.some((query) => query.isLoading)) {
     return <h2>"Loading"</h2>;
@@ -66,9 +50,7 @@ export const ManyQueries = ({trendingData}) => {
     <>
       <div>ManyQueries</div>
       <div className="test-div">
-        <div>{renderExtraPrev()}</div>
         <div>{test}</div>
-        <div>{renderExtraNext()}</div>
       </div>
       <div>Many Details</div>
       <div>

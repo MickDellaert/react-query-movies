@@ -3,8 +3,8 @@ import "./home.css";
 import { v4 as uuidv4 } from "uuid";
 import * as api from "../../api/api";
 import { useEffect, useState } from "react";
+import { useQueries } from "@tanstack/react-query";
 
-// import { useQuery, useQueries } from "@tanstack/react-query";
 
 export const TrendingItem = ({ trendingData }) => {
   const divHeight = 800;
@@ -16,33 +16,27 @@ export const TrendingItem = ({ trendingData }) => {
   const singleHeight = (divHeight - containerPadding * 2) / itemNumber;
 
   const [currentIndex, setCurrentIndex] = useState(startItem);
-  // const [singleHeight, setSingleHeight] = useState(
-  //   (divHeight - containerPadding * 2) / itemNumber
-  // );
-
-  // const [startOffset, setStartOffset] = useState(-currentIndex * singleHeight);
-  // const [isForward, setisForward] = useState(true);
-
   const [clickedIndex, setClickedIndex] = useState(startItem);
   const [sliderIndex, setSliderIndex] = useState(startItem);
-
   const [transition, setTransition] = useState(true);
-  const [clicked, setIsClicked] = useState(false);
-  const [isSliding, setIsSliding] = useState(true);
+  const [isSliding, setIsSliding] = useState(false);
 
   const sliced = trendingData.results.slice(0, totalNumber);
-  const double = [...sliced, ...sliced];
   const triple = [...sliced, ...sliced, ...sliced];
-
-  const slicedIndexed = sliced.map((item, key) => ({ key, ...item }));
-  const doubleIndexed = sliced.map((item, key) => ({ key, ...item }));
   const tripleIndexed = triple.map((item, key) => ({ key, ...item }));
 
-  // const trendingHeader = sliced[nextIndex];
-  // const trendingNext = sliced[nextIndex + 1];
-  // const doubleIndexed = double.map((item, key) => ({ key, ...item }));
+  const userQueries = useQueries({
+    queries: tripleIndexed.map((item) => {
+      return {
+        queryKey: ["getManyDetails", item.id, item.media_type],
+        queryFn: () => api.getDetails(item.id, item.media_type),
+        // select: (data) => { const userQueriesData = data.data.map(item => item.data)
+        // return userQueriesData}
+      };
+    }),
+  });
 
-  console.log(tripleIndexed);
+  const userQueriesIndexed = userQueries.map((item, key) => ({ key, ...item }));
 
   useEffect(() => {
     if (isSliding) {
@@ -113,12 +107,25 @@ export const TrendingItem = ({ trendingData }) => {
 
   console.log("length" + tripleIndexed.length);
   // console.log("start" + startOffset);
+  // console.log(userQueries[0].data);
+  // console.log(userQueries);
+  // console.log(manyTripleIndexed);
+  console.log(userQueriesIndexed);
+
+
+  if (userQueries.some((query) => query.isLoading)) {
+    return <h2>"Loading"</h2>;
+  }
 
   return (
     <>
       <div>TrendingItem</div>
 
-      <div className="horizontal-slider-container">
+      <div
+        className="horizontal-slider-container"
+        // onMouseEnter={() => setIsSliding(false)}
+        // onMouseLeave={() => setIsSliding(true)}
+      >
         <div className="horizontal-slider-crop">
           <div
             className="horizontal-slider-content"
@@ -128,15 +135,15 @@ export const TrendingItem = ({ trendingData }) => {
             }}
             onTransitionEnd={() => handleSliderTransition()}
           >
-            {tripleIndexed.map((item) => (
+            {userQueriesIndexed.map((item) => (
               <div className="horizontal-slider-item" key={uuidv4()}>
                 <p>{item.key} </p>
-                <h5>{item.title} </h5>
-                <h5>{item.original_name}</h5>
+                <h5>{item.data.title} </h5>
+                <h5>{item.data.original_name}</h5>
 
                 <img
                   className="vertical-slider-item-image"
-                  src={`${api.IMG_URL}${item.backdrop_path}`}
+                  src={`${api.IMG_URL}${item.data.backdrop_path}`}
                   alt=""
                 />
               </div>
@@ -148,6 +155,8 @@ export const TrendingItem = ({ trendingData }) => {
       <div
         className="vertical-slider-container"
         style={{ height: `${divHeight}px`, padding: `${containerPadding}px` }}
+        // onMouseEnter={() => setIsSliding(false)}
+        // onMouseLeave={() => setIsSliding(true)}
       >
         <div className="vertical-slider-crop">
           <div
