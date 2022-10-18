@@ -20,6 +20,7 @@ export const TrendingItem = ({ trendingData }) => {
   const [transition, setTransition] = useState(true);
   const [isSliding, setIsSliding] = useState(false);
 
+  
   const sliced = trendingData.results.slice(0, totalNumber);
 
   // const double = [...sliced, ...sliced];
@@ -28,8 +29,12 @@ export const TrendingItem = ({ trendingData }) => {
   const triple = [...sliced, ...sliced, ...sliced];
   const tripleIndexed = triple.map((item, key) => ({ key, ...item }));
 
-  // const firstCopy = trendingData.results.slice(0, itemNumber);
-  // const lastCopy = trendingData.results.slice(totalNumber - itemNumber, totalNumber);
+  const firstCopy = trendingData.results.slice(0, itemNumber);
+  const lastCopy = trendingData.results.slice(totalNumber - itemNumber, totalNumber);
+
+  const combined = [...lastCopy, ...sliced, ...firstCopy]
+  console.log(sliced)
+  console.log(combined)
 
   // console.log(firstCopy)
   // console.log(lastCopy)
@@ -174,6 +179,7 @@ export const TrendingItem = ({ trendingData }) => {
           </div>
         </div>
       </div>
+      
       <div
         className="vertical-slider-container"
         style={{ height: `${divHeight}px`, padding: `${containerPadding}px` }}
