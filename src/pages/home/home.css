@@ -9,7 +9,7 @@ h5 {
 
 .vertical-slider-container {
   width: 20vw;
-  height: 800px;
+  height: 100vh;
   background-color: antiquewhite;
   position: absolute;
   right: 100px;
@@ -17,6 +17,8 @@ h5 {
   overflow: hidden;
   margin: 10px;
   padding: 10px;
+  /* display: none; */
+
 }
 
 .vertical-slider-crop {
@@ -61,6 +63,7 @@ h5 {
   top: 200px;
   margin: 10px;
   padding: 10px;
+  /* display: none; */
 }
 
 .horizontal-slider-crop {
@@ -79,6 +82,18 @@ h5 {
   flex-shrink: 0;
   flex-grow: 1;
   background-color: red;
+  position: relative;
+}
+
+.horizontal-slider-item-image{
+  width: 100%;
+  margin-bottom: 50px;
+}
+
+.horizontal-slider-item-description{
+  background-color: black;
+color: white;
+text-align: left;
 }
 
 .search-results {
@@ -96,15 +111,18 @@ h5 {
 }
 
 .search-results-movies-wrapper {
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 10px;
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  /* justify-content: center; */
+  /* flex-wrap: wrap; */
+  gap: 5px;
 }
+
 
 .search-results-item img {
   width: 100px;
 }
+
 
 .search-results-movies h2 {
   font-size: 24px;
@@ -116,4 +134,12 @@ h5 {
   font-size: 16px;
   color: white;
   display: none;
+}
+
+.logo-image {
+  width: 300px;
+  position: absolute;
+  left: 50px;
+  bottom: 200px;
+  z-index: 50;
 }

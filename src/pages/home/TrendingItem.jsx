@@ -5,11 +5,10 @@ import * as api from "../../api/api";
 import { useEffect, useState } from "react";
 import { useQueries } from "@tanstack/react-query";
 
-
 export const TrendingItem = ({ trendingData }) => {
-  const divHeight = 800;
-  const startItem = 1;
-  const itemNumber = 6;
+  const divHeight = 600;
+  const startItem = 6;
+  const itemNumber = 4;
   const totalNumber = 6;
   const containerPadding = 10;
   const singlePadding = 5;
@@ -22,8 +21,18 @@ export const TrendingItem = ({ trendingData }) => {
   const [isSliding, setIsSliding] = useState(false);
 
   const sliced = trendingData.results.slice(0, totalNumber);
+
+  // const double = [...sliced, ...sliced];
+  // const doubleIndexed = double.map((item, key) => ({ key, ...item }));
+
   const triple = [...sliced, ...sliced, ...sliced];
   const tripleIndexed = triple.map((item, key) => ({ key, ...item }));
+
+  // const firstCopy = trendingData.results.slice(0, itemNumber);
+  // const lastCopy = trendingData.results.slice(totalNumber - itemNumber, totalNumber);
+
+  // console.log(firstCopy)
+  // console.log(lastCopy)
 
   const userQueries = useQueries({
     queries: tripleIndexed.map((item) => {
@@ -44,12 +53,12 @@ export const TrendingItem = ({ trendingData }) => {
         setTransition(true);
         setCurrentIndex((prev) => prev + 1);
 
-        if (currentIndex > tripleIndexed.length / 3) {
-          // setTransition(false);
-          setCurrentIndex(
-            (currentIndex) => currentIndex - tripleIndexed.length / 3
-          );
-        }
+        // if (currentIndex > tripleIndexed.length / 3) {
+        //   // setTransition(false);
+        //   setCurrentIndex(
+        //     (currentIndex) => currentIndex - tripleIndexed.length / 3
+        //   );
+        // }
       }, 2000);
       return () => {
         clearInterval(intervalId);
@@ -117,10 +126,12 @@ export const TrendingItem = ({ trendingData }) => {
     return <h2>"Loading"</h2>;
   }
 
+  console.log(userQueriesIndexed[0].data.images.logos);
+
+
   return (
     <>
       <div>TrendingItem</div>
-
       <div
         className="horizontal-slider-container"
         // onMouseEnter={() => setIsSliding(false)}
@@ -131,7 +142,7 @@ export const TrendingItem = ({ trendingData }) => {
             className="horizontal-slider-content"
             style={{
               transform: `translateX(-${currentIndex * 100}%)`,
-              transition: transition ? `all 300ms linear` : "none",
+              transition: transition ? `all 400ms ease-out` : "none",
             }}
             onTransitionEnd={() => handleSliderTransition()}
           >
@@ -140,18 +151,29 @@ export const TrendingItem = ({ trendingData }) => {
                 <p>{item.key} </p>
                 <h5>{item.data.title} </h5>
                 <h5>{item.data.original_name}</h5>
-
-                <img
+                {/* <img
                   className="vertical-slider-item-image"
                   src={`${api.IMG_URL}${item.data.backdrop_path}`}
                   alt=""
-                />
+                /> */}
+
+                {item.data.images.backdrops.slice(0, 1).map((items) => (
+                  // <div>{items.width}</div>
+
+                  <img
+                    // className="logo-image"
+                    className="horizontal-slider-item-image"
+                    src={`${api.IMG_URL}${items.file_path}`}
+                    alt=""
+                  />
+                ))}
+
+                <p className="horizontal-slider-item-description">{item.data.overview}</p>
               </div>
             ))}
           </div>
         </div>
       </div>
-
       <div
         className="vertical-slider-container"
         style={{ height: `${divHeight}px`, padding: `${containerPadding}px` }}
@@ -162,8 +184,12 @@ export const TrendingItem = ({ trendingData }) => {
           <div
             className="vertical-slider-content"
             style={{
-              transform: `translateY(-${(currentIndex + 1) * singleHeight}px)`,
-              transition: transition ? `all 300ms linear` : "none",
+              // transform: `translateY(-${(currentIndex + 1) * (singleHeight)}px)`,
+              transform: `translateY(-${
+                (currentIndex + 1) * (100 / itemNumber)
+              }%)`,
+
+              transition: transition ? `all 400ms ease-out` : "none",
             }}
             onTransitionEnd={() => handleTransition()}
           >
@@ -193,10 +219,22 @@ export const TrendingItem = ({ trendingData }) => {
           </div>
         </div>
       </div>
-
       <button onClick={previousFunction}>Previous</button>
       <button onClick={nextFunction}>Next</button>
       <button onClick={pauseSlider}>Pause slideshow</button>
+      <div>
+        {/* {userQueriesIndexed.map((item) =>
+              item.data.images.backdrops.map((items) => (
+                // <div>{items.width}</div>
+
+                <img
+                  className="backdrop-image"
+                  src={`${api.IMG_URL}${items.file_path}`}
+                  alt=""
+                />
+              ))
+            )} */}
+      </div>
     </>
   );
 };

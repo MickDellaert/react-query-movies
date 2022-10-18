@@ -32,7 +32,7 @@ export const queryTv = ({ queryKey }) => {
 
 export const getDetails = (id, type) => {
   return getMovies(
-    `${type}/${id}?api_key=${API_KEY}&append_to_response=videos,images`
+    `${type}/${id}?api_key=${API_KEY}&append_to_response=videos,images&include_image_language=en`
   );
 };
 
