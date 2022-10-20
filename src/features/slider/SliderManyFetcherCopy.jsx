@@ -5,16 +5,19 @@ import { SliderContainer } from "./SliderContainer";
 import { SliderVertical } from "./SliderVertical";
 import { SliderHorizontal } from "./SliderHorizontal";
 
-export const SliderManyFetcher = ({
-  trendingDataCombined,
+export const SliderManyFetcherCopy = ({
+  tripleIndexed,
+  doubleIndexed,
   itemNumberHorizontal,
   itemNumberVertical,
-  skipFirst,
+  combinedHorizontal,
+  combinedVerticalIndexed,
 }) => {
-  console.log(trendingDataCombined.length - itemNumberVertical * 2 - 1);
+
+  console.log(itemNumberVertical)
 
   const userQueries = useQueries({
-    queries: trendingDataCombined.map((item) => {
+    queries: tripleIndexed.map((item) => {
       return {
         queryKey: ["getManyDetails", item.id, item.media_type],
         queryFn: () => api.getDetails(item.id, item.media_type),
@@ -22,10 +25,7 @@ export const SliderManyFetcher = ({
     }),
   });
 
-  const trendingDataIndexed = userQueries.map((item, key) => ({
-    key,
-    ...item,
-  }));
+  const userQueriesIndexed = userQueries.map((item, key) => ({ key, ...item }));
 
   const {
     nextFunction,
@@ -35,22 +35,11 @@ export const SliderManyFetcher = ({
     pauseSlider,
     currentIndex,
     transition,
-  } = useSlider(itemNumberVertical, trendingDataCombined);
+  } = useSlider(itemNumberHorizontal, combinedHorizontal);
 
   if (userQueries.some((query) => query.isLoading)) {
     return <h2>"Loading"</h2>;
   }
-
-  // console.log(trendingDataIndexed);
-
-  const data = {
-    trendingDataIndexed,
-    currentIndex,
-    transition,
-    skipFirst,
-    handleClick,
-    handleTransition,
-  };
 
   return (
     <>
@@ -58,34 +47,34 @@ export const SliderManyFetcher = ({
       <button onClick={nextFunction}>Next</button>
       <button onClick={pauseSlider}>Pause slideshow</button>
 
-      <SliderHorizontal
-        {...data}
-        // trendingDataIndexed={trendingDataIndexed}
-        // currentIndex={currentIndex}
-        // transition={transition}
-        // handleClick={handleClick}
-        // handleTransition={handleTransition}
-        itemNumber={1}
+      {/* <SliderHorizontal
+        combinedHorizontal={combinedHorizontal}
+        combinedVerticalIndexed={combinedVerticalIndexed}
+        userQueriesIndexed={userQueriesIndexed}
         divHeight={"auto"}
-        containerPadding={10}
+        itemNumber={itemNumberHorizontal}
         singlePadding={0}
-      />
+        currentIndex={currentIndex}
+        containerPadding={10}
+        handleClick={handleClick}
+        handleTransition={handleTransition}
+        transition={transition}
+        doubleIndexed={doubleIndexed}
+      /> */}
 
-      <SliderVertical
-        {...data}
-        // trendingDataIndexed={trendingDataIndexed}
-        // currentIndex={currentIndex}
-        // transition={transition}
-        // skipFirst={skipFirst}
-        // handleClick={handleClick}
-        // handleTransition={handleTransition}
-        itemNumber={itemNumberVertical}
+      {/* <SliderVertical
+        combinedVerticalIndexed={combinedVerticalIndexed}
+        tripleIndexed={tripleIndexed}
         divHeight={800}
+        itemNumber={itemNumberVertical}
         containerPadding={10}
         singlePadding={10}
+        currentIndex={currentIndex}
+        handleClick={handleClick}
+        handleTransition={handleTransition}
+        transition={transition}
         horizontal={false}
-      />
-
+      /> */}
       {/* 
       <SliderContainer
         userQueriesIndexed={userQueriesIndexed}

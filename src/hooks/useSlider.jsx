@@ -1,10 +1,8 @@
 import { useEffect, useState } from "react";
 
- const useSlider = (startItem, tripleIndexed) => {
-
-
-  const [currentIndex, setCurrentIndex] = useState(startItem);
-  const [clickedIndex, setClickedIndex] = useState(startItem);
+const useSlider = (itemNumberVertical, trendingDataIndexed) => {
+  const [currentIndex, setCurrentIndex] = useState(itemNumberVertical);
+  // const [clickedIndex, setClickedIndex] = useState(startItem);
   const [transition, setTransition] = useState(true);
   const [isSliding, setIsSliding] = useState(false);
 
@@ -20,8 +18,6 @@ import { useEffect, useState } from "react";
     }
   }, [isSliding]);
 
-
-
   const nextFunction = () => {
     setTransition(true);
     setCurrentIndex((currentIndex) => currentIndex + 1);
@@ -35,7 +31,7 @@ import { useEffect, useState } from "react";
 
   const handleClick = (item) => {
     setTransition(true);
-    setClickedIndex(item);
+    // setClickedIndex(item);
     setCurrentIndex(item);
   };
 
@@ -46,16 +42,42 @@ import { useEffect, useState } from "react";
   const handleTransition = () => {
     if (currentIndex === 0) {
       setTransition(false);
-      setCurrentIndex(tripleIndexed.length / 3);
+      setCurrentIndex(
+        trendingDataIndexed.length - itemNumberVertical * 2 - 1
+      );
     }
-    if (currentIndex > tripleIndexed.length / 3) {
+    if (
+      currentIndex >
+      trendingDataIndexed.length - itemNumberVertical * 2 - 1
+    ) {
       setTransition(false);
-      setCurrentIndex(currentIndex - tripleIndexed.length / 3);
+      setCurrentIndex(
+        currentIndex -
+          (trendingDataIndexed.length - itemNumberVertical * 2 - 1)
+      );
     }
   };
 
-  return {nextFunction, previousFunction, handleClick, handleTransition, pauseSlider, currentIndex, transition}
+  // const handleTransition = () => {
+  //   if (currentIndex === 0) {
+  //     setTransition(false);
+  //     setCurrentIndex(tripleIndexed.length / 3);
+  //   }
+  //   if (currentIndex > tripleIndexed.length / 3) {
+  //     setTransition(false);
+  //     setCurrentIndex(currentIndex - tripleIndexed.length / 3);
+  //   }
+  // };
 
-}
+  return {
+    nextFunction,
+    previousFunction,
+    handleClick,
+    handleTransition,
+    pauseSlider,
+    currentIndex,
+    transition,
+  };
+};
 
-export default useSlider
+export default useSlider;

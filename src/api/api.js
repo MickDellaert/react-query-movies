@@ -13,6 +13,9 @@ export const IMG_ORIGINAL_URL = "https://image.tmdb.org/t/p/orignal/";
 
 export const getPopular = () => getMovies(`movie/popular?api_key=${API_KEY}`);
 
+export const getPopularTv = () => getMovies(`tv/popular?api_key=${API_KEY}`);
+
+
 export const getTrending = () =>
   getMovies(`trending/all/week?api_key=${API_KEY}&append_to_response=videos`);
 

@@ -39,6 +39,7 @@ export const Movies = () => {
       <h2>Popular Movies</h2>
       {popularData?.results.map((item) => (
         <ListItem key={item.id} item={item} mediaType="movie" />
+        
       ))}
     </>
   );
