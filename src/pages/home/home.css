@@ -3,22 +3,40 @@
   margin: 0;
   padding: 0;
 }
+
+body{
+  background-color: ghostwhite;
+}
 h5 {
   margin: 0;
+}
+
+.input-group {
+  margin-top: 40px;
+}
+
+input{
+  margin-bottom: 10px;
+}
+
+.buttons-row{
+  display: flex;
+  gap: 5px;
+  justify-content: center;
+}
+
+.slider-row {
+  display: flex;
+  justify-content: center;
 }
 
 .vertical-slider-container {
   width: 20vw;
   height: 100vh;
-  background-color: antiquewhite;
-  position: absolute;
-  right: 100px;
-  top: 100px;
+  background-color: gainsboro;
   overflow: hidden;
   margin: 10px;
   padding: 10px;
-  /* display: none; */
-
 }
 
 .vertical-slider-crop {
@@ -41,6 +59,11 @@ h5 {
   padding-block: 10px;
 }
 
+.slider-item-row{
+  display: flex;
+  justify-content: space-between;
+}
+
 .vertical-slider-item-image {
   width: 100%;
   height: 100%;
@@ -56,14 +79,11 @@ h5 {
 .horizontal-slider-container {
   display: flex;
   width: 800px;
+  height: 600px;
   position: relative;
-  background-color: antiquewhite;
-  /* position: absolute; */
-  /* left: 100px;
-  top: 200px; */
+  background-color: gainsboro;
   margin: 10px;
   padding: 10px;
-  /* display: none; */
 }
 
 .horizontal-slider-crop {
@@ -74,26 +94,25 @@ h5 {
 
 .horizontal-slider-content {
   display: flex;
-  /* transform: translateX(-300%); */
 }
 
 .horizontal-slider-item {
   width: 100%;
   flex-shrink: 0;
   flex-grow: 1;
-  background-color: red;
+  background-color: gainsboro;
   position: relative;
 }
 
-.horizontal-slider-item-image{
+.horizontal-slider-item-image {
   width: 100%;
   margin-bottom: 50px;
 }
 
-.horizontal-slider-item-description{
+.horizontal-slider-item-description {
   background-color: black;
-color: white;
-text-align: left;
+  color: gai;
+  text-align: left;
 }
 
 .search-results {
@@ -118,11 +137,9 @@ text-align: left;
   gap: 5px;
 }
 
-
 .search-results-item img {
   width: 100px;
 }
-
 
 .search-results-movies h2 {
   font-size: 24px;

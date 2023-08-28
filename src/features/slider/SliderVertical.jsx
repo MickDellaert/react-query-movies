@@ -1,90 +1,62 @@
 import "../../pages/home/home.css";
-
 import * as api from "../../api/api";
+import { v4 as uuidv4 } from "uuid";
 
-export const SliderVertical = (
-  {
-    trendingDataIndexed,
-    currentIndex,
-    transition,
-    skipFirst,
-    handleClick,
-    handleTransition,
-    divHeight,
-    itemNumber,
-    singlePadding,
-    containerPadding,
-    horizontal,
-    translate,
-  }
-) => {
-
+export const SliderVertical = ({
+  trendingDataIndexed,
+  currentIndex,
+  transition,
+  skipFirst,
+  handleClick,
+  handleTransition,
+  divHeight,
+  itemNumber,
+  singlePadding,
+  containerPadding,
+  horizontal,
+  translate,
+}) => {
   return (
     <>
       <div
-        className={
-          horizontal
-            ? "horizontal-slider-container"
-            : "vertical-slider-container"
-        }
+        className={horizontal ? "horizontal-slider-container" : "vertical-slider-container"}
         style={{ height: `${divHeight}px`, padding: `${containerPadding}px` }}
         // onMouseEnter={() => setIsSliding(false)}
         // onMouseLeave={() => setIsSliding(true)}
       >
-        <div
-          className={
-            horizontal ? `horizontal-slider-crop` : `vertical-slider-crop`
-          }
-        >
+        <div className={horizontal ? `horizontal-slider-crop` : `vertical-slider-crop`}>
           <div
-            className={
-              horizontal
-                ? `horizontal-slider-content`
-                : `vertical-slider-content`
-            }
+            className={horizontal ? `horizontal-slider-content` : `vertical-slider-content`}
             style={{
               transform: horizontal
-                ? `translateX(-${
-                    (currentIndex + skipFirst) * (100 / itemNumber)
-                  }%)`
-                : `translateY(-${
-                    (currentIndex + skipFirst) * (100 / itemNumber)
-                  }%)`,
+                ? `translateX(-${(currentIndex + skipFirst) * (100 / itemNumber)}%)`
+                : `translateY(-${(currentIndex + skipFirst) * (100 / itemNumber)}%)`,
 
               transition: transition ? `all 300ms ease-out` : "none",
             }}
             onTransitionEnd={() => handleTransition()}
           >
             {trendingDataIndexed.map((item) => (
-              <>
-                <div
-                  className={
-                    horizontal
-                      ? `horizontal-slider-item`
-                      : "vertical-slider-item"
-                  }
-                  key={item.id}
-                  onClick={() => handleClick(item.key)}
-                  style={{
-                    height: `calc((100% / ${itemNumber})`,
-                    paddingBlock: `${singlePadding}px`,
-                  }}
-                >
+              <div
+                className={horizontal ? `horizontal-slider-item` : "vertical-slider-item"}
+                key={uuidv4()}
+                onClick={() => handleClick(item.key)}
+                style={{
+                  height: `calc((100% / ${itemNumber})`,
+                  paddingBlock: `${singlePadding}px`,
+                }}
+              >
+                <div className="slider-item-row">
                   <p>{item.key} </p>
                   <h5>{item.data.title} </h5>
                   <h5>{item.data.original_name}</h5>
-
-                  <img
-                    className={
-                      horizontal
-                        ? `horizontal-slider-item-image`
-                        : `vertical-slider-item-image`
-                    }
-                    src={`${api.IMG_URL}${item.data.backdrop_path}`}
-                    alt=""
-                  />
                 </div>
-              </>
+                <img
+                  className={horizontal ? `horizontal-slider-item-image` : `vertical-slider-item-image`}
+                  src={`${api.IMG_URL}${item.data.backdrop_path}`}
+                  alt=""
+                />
+              </div>
             ))}
           </div>
         </div>

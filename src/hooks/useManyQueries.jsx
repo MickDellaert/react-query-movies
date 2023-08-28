@@ -2,12 +2,14 @@ import * as api from "../api/api";
 
 import { useQuery, useQueries } from "@tanstack/react-query";
 
-const useManyQueries = (fetcher, type, itemNumber) =>{
+const useManyQueries = (fetcherFn, multiFetcherKey, type, itemNumber) =>{
+
+  // const multifetcher = "multifetcher"
 
 
-  const { isLoading: trendingLoading, data: trendingData } = useQuery(
-    ["bla-movies"],
-    fetcher,
+  const { data } = useQuery(
+    ["dynamic-query"],
+    fetcherFn,
     {
       select: (data) => {
         const slicedData = data.results.slice(0, itemNumber);
@@ -17,9 +19,9 @@ const useManyQueries = (fetcher, type, itemNumber) =>{
   );
 
   const userQueries = useQueries({
-    queries: trendingData?.map((item) => {
+    queries: data?.map((item) => {
       return {
-        queryKey: ["getTestDetails", item.id, item.media_type || type],
+        queryKey: [multiFetcherKey, item.id, item.media_type || type],
         queryFn: () => api.getDetails(item.id, item.media_type || type ),
         // enabled: !!trendingData,
         // select: (data) => data.data.map((item, key) => ({key, ...item}))
@@ -29,7 +31,7 @@ const useManyQueries = (fetcher, type, itemNumber) =>{
 
   const userQueriesIndexed = userQueries.map((item, key) => ({ key, ...item }));
 
-  return {userQueriesIndexed, trendingData, userQueries}
+  return {userQueriesIndexed, data, userQueries}
 
 }
 

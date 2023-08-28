@@ -1,10 +1,8 @@
 import "../../pages/home/home.css";
-
 import * as api from "../../api/api";
-
 import { v4 as uuidv4 } from "uuid";
 
-export const SliderHorizontal = ( {
+export const SliderHorizontal = ({
   trendingDataIndexed,
   divHeight,
   itemNumber,
@@ -15,9 +13,6 @@ export const SliderHorizontal = ( {
   handleTransition,
   transition,
 }) => {
-
-
-  
   return (
     <>
       <div
@@ -45,9 +40,12 @@ export const SliderHorizontal = ( {
                   paddingBlock: `${singlePadding}px`,
                 }}
               >
-                <p>{item.key} </p>
-                <h5>{item.data.title} </h5>
-                <h5>{item.data.original_name}</h5>
+                <div className="">
+                  <p>{item.key} </p>
+                  <h5>{item.data.title} </h5>
+                  <h5>{item.data.original_name}</h5>
+                </div>
+
                 {/* <img
                   className="horizontal-slider-item-image"
                   src={`${api.IMG_URL}${item.backdrop_path}`}
@@ -58,6 +56,7 @@ export const SliderHorizontal = ( {
                   // <div>{items.width}</div>
 
                   <img
+                    key={uuidv4()}
                     // className="logo-image"
                     className="horizontal-slider-item-image"
                     src={`${api.IMG_URL}${items.file_path}`}
